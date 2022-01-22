@@ -14,7 +14,8 @@ defmodule HttpClient.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger]
+      extra_applications: [:logger],
+      applications: [:logger, :httpoison, :httpotion, :inets, :ssl]
     ]
   end
 
@@ -23,7 +24,8 @@ defmodule HttpClient.MixProject do
     [
       {:httpoison, "~> 1.8"},
       {:httpotion, "~> 3.1"},
-      {:tesla, "~> 1.4"}
+      {:tesla, "~> 1.4"},
+      {:jason, "~> 1.3"}
     ]
   end
 end
