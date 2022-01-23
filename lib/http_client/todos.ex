@@ -1,3 +1,3 @@
 defmodule Todos do
-  defstruct userId: nil, id: nil, title: nil, completed: nil
+  defstruct user_id: nil, id: nil, title: nil, completed: nil
 end
