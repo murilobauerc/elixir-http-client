@@ -22,7 +22,7 @@ defmodule HttpClient.Tesla do
   def get_todo_id(id) do
     case get("/todos/#{id}") do
       {:ok, %Tesla.Env{status: 200, body: body}} -> body
-      {:ok, %Tesla.Env{status: 404}} -> {:error, "Todo does not exists."}
+      {:ok, %Tesla.Env{status: 404}} -> {:error, "Todo #{id} does not exists."}
     end
   end
 
@@ -35,6 +35,29 @@ defmodule HttpClient.Tesla do
       {:ok, %Tesla.Env{status: 201, body: body}} -> body
       {:ok, %Tesla.Env{status: 404}} -> {:error, "Something went wrong when creating the todo."}
       {:ok, %Tesla.Env{status: 500}} -> {:error, "Internal server error"}
+    end
+  end
+
+  @doc """
+    Given an id, deletes the todo.
+  """
+  def delete_todo(id) do
+    case delete("/todos/#{id}") do
+      {:ok, %Tesla.Env{status: 200}} -> "Deleted the record with id: #{id}"
+      {:ok, %Tesla.Env{status: 404}} -> {:error, "Todo #{id} does not exists."}
+      {:ok, %Tesla.Env{status: 500}} -> {:error, "Internal Server Error."}
+    end
+  end
+
+  @doc """
+    Given an id, updates the todo.
+  """
+  def update_todo(user_id, title, completed) do
+    request_body = %{user_id: user_id, title: title, completed: completed}
+    case put("/todos/#{user_id}", request_body) do
+      {:ok, %Tesla.Env{status: 200, body: body}} -> body
+      {:ok, %Tesla.Env{status: 404}} -> {:error, "Something went wrong to update the todo."}
+      {:ok, %Tesla.Env{status: 500}} -> {:error, "Internal Server Error."}
     end
   end
 
