@@ -37,16 +37,13 @@ defmodule HttpClient.Tesla do
       {:ok, %Tesla.Env{status: 500}} -> {:error, "Internal server error"}
     end
   end
+
   @doc """
     Returns a parsed detailed list of all todos completed.
   """
   def list_all_by_completed_todos() do
     get_all_todos()
     |> match_completed_todos()
-  end
-
-  def filter_todo_id({:ok, todo}) do
-    todo
   end
 
   def match_completed_todos(todos) do
