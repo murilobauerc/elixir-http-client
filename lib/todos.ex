@@ -1,4 +1,4 @@
-defmodule HttpClient.Tesla do
+defmodule Todos do
   use Tesla
   @base_url "https://jsonplaceholder.typicode.com"
 
@@ -11,6 +11,43 @@ defmodule HttpClient.Tesla do
   def get_all_todos() do
     case get("/todos") do
       {:ok, %Tesla.Env{status: 200, body: body}} -> body
+      {:ok, %Tesla.Env{status: 404}} -> {:error, "URL not found. 404."}
+      {:ok, %Tesla.Env{status: 500}} -> {:error, "Internal server error."}
+    end
+  end
+
+
+  @doc """
+    Gets only a specific quantity of todos given by the user.
+    The `quantity` argument indicates how many todos should be listed.
+
+  ## Examples
+
+      iex> Todos.get_quantity_todos(3)
+      [
+        %{
+          "completed" => false,
+          "id" => 1,
+          "title" => "delectus aut autem",
+          "userId" => 1
+        },
+        %{
+          "completed" => false,
+          "id" => 2,
+          "title" => "quis ut nam facilis et officia qui",
+          "userId" => 1
+        },
+        %{
+          "completed" => false,
+          "id" => 3,
+          "title" => "fugiat veniam minus",
+          "userId" => 1
+        }
+      ]
+  """
+  def get_quantity_todos(quantity) do
+    case get("/todos") do
+      {:ok, %Tesla.Env{status: 200, body: body}} -> Enum.take(body, quantity)
       {:ok, %Tesla.Env{status: 404}} -> {:error, "URL not found. 404."}
       {:ok, %Tesla.Env{status: 500}} -> {:error, "Internal server error."}
     end
