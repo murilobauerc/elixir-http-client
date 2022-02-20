@@ -1,4 +1,6 @@
-# HttpClient
+# To-do App
+
+## A todo app created used as POC for usage of different flavors of http's client: HTTPoison, HTTPotion and Tesla
 
 - [HTTPoison](https://github.com/edgurgel/httpoison) - the most popular HTTP client on hex.pm, powered by hackney
 - [HTTPotion](https://github.com/unrelentingtech/httpotion) - powered by ibrowse
