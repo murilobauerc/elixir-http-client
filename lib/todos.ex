@@ -66,7 +66,7 @@ defmodule Todos do
   @doc """
     Given user_id, title and completed returns a created todo.
   """
-  def create_todo(user_id, title, completed) do
+  def create_todo(user_id, title, completed) when is_integer(user_id) and is_boolean(completed) do
     request_body = %{user_id: user_id, title: title, completed: completed}
     case post("/todos", request_body) do
       {:ok, %Tesla.Env{status: 201, body: body}} -> body
@@ -75,16 +75,20 @@ defmodule Todos do
     end
   end
 
+  def create_todo(_, _, _), do: {:error, "Something went wrong."}
+
   @doc """
     Given an id, deletes the todo.
   """
-  def delete_todo(id) do
+  def delete_todo(id) when is_integer(id) do
     case delete("/todos/#{id}") do
       {:ok, %Tesla.Env{status: 200}} -> "Deleted the record with id: #{id}"
       {:ok, %Tesla.Env{status: 404}} -> {:error, "Todo #{id} does not exists."}
       {:ok, %Tesla.Env{status: 500}} -> {:error, "Internal Server Error."}
     end
   end
+
+  def delete_todo(_), do: {:error, "Something went wrong."}
 
   @doc """
     Given an id, updates the todo.
